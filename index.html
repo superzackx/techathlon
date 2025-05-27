@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPS Techathlon 2025 - An Imperfect World</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            100: '#1d1d1f',
+                            200: '#2d2d30',
+                            300: '#424245',
+                            400: '#6e6e73',
+                            500: '#86868b',
+                            600: '#a1a1a6',
+                            700: '#d2d2d7',
+                            800: '#f5f5f7'
+                        },
+                        accent: {
+                            blue: '#007aff',
+                            purple: '#af52de',
+                            pink: '#ff2d92',
+                            orange: '#ff9500',
+                            green: '#30d158',
+                            mint: '#00c7be',
+                            cyan: '#32d74b'
+                        }
+                    },
+                    fontFamily: {
+                        'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out',
+                        'fade-in': 'fadeIn 1.2s ease-out',
+                        'modal-fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-in': 'slideIn 0.8s ease-out',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-30px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(0, 122, 255, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(0, 122, 255, 0.6)' }
+                        }
+                    },
+                    backdropBlur: {
+                        'apple': '20px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(29, 29, 31, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #007aff, #af52de, #ff2d92);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .section-padding {
+            padding: 120px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 80px 0;
+            }
+        }
+        .modal-content-area {
+            max-height: calc(90vh - 150px); /* Adjust based on header/footer height in modal */
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar for modal content (optional) */
+        .modal-content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content-area::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        .modal-content-area::-webkit-scrollbar-thumb {
+            background: rgba(134, 134, 139, 0.5); /* dark-500 with opacity */
+            border-radius: 10px;
+        }
+        .modal-content-area::-webkit-scrollbar-thumb:hover {
+            background: rgba(161, 161, 166, 0.7); /* dark-600 with opacity */
+        }
+body, html {
+  margin: 0;
+  overflow-x: hidden;
+}
+.scroll-animation-container {
+  position: relative;
+  overflow: hidden;
+}
+canvas {
+  width: 100%;
+  height: auto;
+}
+
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+</head>
+<body class="bg-black text-white font-sf antialiased">
+    <nav class="fixed w-full z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-accent-blue to-accent-purple rounded-lg flex items-center justify-center">
+                        <i class="fas fa-code text-white text-sm"></i>
+                    </div>
+                    <span class="font-semibold text-lg">Techathlon</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-dark-600 hover:text-white transition-colors duration-300">Home</a>
+                    <a href="#events" class="text-dark-600 hover:text-white transition-colors duration-300">Events</a>
+                    <a href="#timeline" class="text-dark-600 hover:text-white transition-colors duration-300">Timeline</a>
+                    <a href="#register" class="text-dark-600 hover:text-white transition-colors duration-300">Register</a>
+                </div>
+                
+                <button class="bg-accent-blue hover:bg-blue-600 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300">
+                    Register Now
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-10 md:pt-16">
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-blue opacity-10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-purple opacity-10 rounded-full blur-3xl animate-float" style="animation-delay: 3s;"></div>
+        </div>
+        
+        <div class="relative z-10 text-center max-w-5xl mx-auto px-6 animate-fade-in-up">
+            <div class="mt-4">
+                <span class="inline-block px-4 py-2 bg-dark-200 rounded-full text-sm text-dark-600 mb-8">
+                    August 13, 2025 • Grades 9–12
+                </span>
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl font-light mb-8 leading-tight">
+                <span class="font-thin">Unleash Your</span><br>
+                <span class="text-gradient">Inner Innovator</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-dark-600 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+                DPS Techathlon 2025. Where innovation meets imperfection, and creativity bridges the gaps in our digital universe.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button class="bg-white text-black px-8 py-4 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                    Register Now
+                </button>
+                <button class="border border-dark-300 text-white px-8 py-4 rounded-full font-medium hover:bg-dark-200 transition-all duration-300">
+                    View Events
+                </button>
+            </div>
+            
+            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="text-3xl font-light text-accent-blue">7</div> <div class="text-dark-600 text-sm">Events</div>
+                </div>
+                <div class="animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="text-3xl font-light text-accent-green">500+</div>
+                    <div class="text-dark-600 text-sm">Participants</div>
+                </div>
+                <div class="animate-fade-in" style="animation-delay: 0.6s;">
+                    <div class="text-3xl font-light text-accent-purple">25+</div>
+                    <div class="text-dark-600 text-sm">Schools</div>
+                </div>
+                <div class="animate-fade-in" style="animation-delay: 0.8s;">
+                    <div class="text-3xl font-light text-accent-orange">1</div>
+                    <div class="text-dark-600 text-sm">Day</div>
+                </div>
+            </div>
+        <div class="scroll-animation-container ">
+  <canvas id="laptopCanvas"></canvas>
+</div>
+        </div>
+    </section>
+
+    <section id="events" class="section-padding">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl md:text-6xl font-light mb-6">Events</h2>
+                <p class="text-xl text-dark-600 max-w-3xl mx-auto font-light">
+                    Choose your battlefield. Master your craft. Bridge the imperfections.
+                </p>
+            </div>
+
+            <div class="mb-24">
+                <div class="flex items-center mb-12">
+                    <div class="w-4 h-4 bg-red-500 rounded-full mr-4"></div>
+                    <h3 class="text-3xl font-light">Offline Events</h3>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-code-battle">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-blue rounded-2xl flex items-center justify-center mr-4">
+                                <i class="fas fa-code text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">Code Battle</h4>
+                                <p class="text-dark-600 text-sm">Hack the Gap</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Solo coding challenge focused on DSA, debugging, and logic. 3 hours of pure algorithmic thinking.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-clock w-4 mr-2"></i>
+                                <span>Duration: 3 hours</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-user w-4 mr-2"></i>
+                                <span>Solo challenge</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-laptop w-4 mr-2"></i>
+                                <span>Personal laptops required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-techno-bowl">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-purple rounded-2xl flex items-center justify-center mr-4">
+                                <i class="fas fa-brain text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">Techno Bowl</h4>
+                                <p class="text-dark-600 text-sm">From Bugs to Breakthroughs</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Tech quiz with online qualifiers on Aug 2, followed by buzzer rounds and rapid fire.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-users w-4 mr-2"></i>
+                                <span>Team of 2</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar w-4 mr-2"></i>
+                                <span>Round 1: Aug 2 (Online)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-trophy w-4 mr-2"></i>
+                                <span>Max 2 teams per school</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-design-duel">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-pink rounded-2xl flex items-center justify-center mr-4">
+                                <i class="fas fa-palette text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">Design Duel</h4>
+                                <p class="text-dark-600 text-sm">UI/UX or Physical Product</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Choose between UI/UX or Physical Product design. Submit by Aug 5, top 10 present live.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-users w-4 mr-2"></i>
+                                <span>Team of 2</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-upload w-4 mr-2"></i>
+                                <span>Submission: Aug 5</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-star w-4 mr-2"></i>
+                                <span>Top 10 present live</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-tech-tune">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-orange rounded-2xl flex items-center justify-center mr-4">
+                                <i class="fas fa-music text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">Tech Tune</h4>
+                                <p class="text-dark-600 text-sm">Remix Challenge</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Remix movie/TV tracks with genre revealed on event day. Create 45-70 second masterpieces.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-clock w-4 mr-2"></i>
+                                <span>Duration: 3 hours</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-users w-4 mr-2"></i>
+                                <span>Team of 2</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-file-audio w-4 mr-2"></i>
+                                <span>Output: 45-70s MP3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center mb-12">
+                    <div class="w-4 h-4 bg-green-500 rounded-full mr-4"></div>
+                    <h3 class="text-3xl font-light">Online Events</h3>
+                    <span class="ml-4 px-3 py-1 bg-dark-200 rounded-full text-sm text-dark-600">Deadline: July 18, 2025</span>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-clip-clash">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-cyan rounded-2xl flex items-center justify-center mr-4">
+                                <i class="fas fa-video text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">Clip Clash</h4>
+                                <p class="text-dark-600 text-sm">"What if..." Loop Videos</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Create compelling 30-90 second loop videos exploring alternate realities.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-users w-4 mr-2"></i>
+                                <span>Team: 1-2 members</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock w-4 mr-2"></i>
+                                <span>30-90 seconds</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-game-jam">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-green rounded-2xl flex items-center justify-center mr-4">
+                                <i class="fas fa-gamepad text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">Game Jam</h4>
+                                <p class="text-dark-600 text-sm">Glitch in Time</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Develop games around time glitches using any engine or prototyping tool.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-users w-4 mr-2"></i>
+                                <span>Team: 1-2 members</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-tools w-4 mr-2"></i>
+                                <span>Any game engine</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect p-8 rounded-3xl card-hover cursor-pointer" data-modal-target="modal-dpsi-esports">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-accent-mint rounded-2xl flex items-center justify-center mr-4"> <i class="fas fa-trophy text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium">DPSI Esports</h4>
+                                <p class="text-dark-600 text-sm">Valorant & Rocket League</p>
+                            </div>
+                        </div>
+                        <p class="text-dark-600 mb-4">Compete in Valorant (5+1) or Rocket League (2) with anti-cheat protocols.</p>
+                        <div class="space-y-2 text-sm text-dark-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-server w-4 mr-2"></i>
+                                <span>Valorant: Asia only</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-shield-alt w-4 mr-2"></i>
+                                <span>Anti-cheat: Dual camera</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="section-padding bg-dark-100">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl md:text-6xl font-light mb-6">Timeline</h2>
+                <p class="text-xl text-dark-600 font-light">Mark your calendars. Prepare for excellence.</p>
+            </div>
+            
+            <div class="space-y-12">
+                <div class="flex items-center space-x-8 animate-slide-in">
+                    <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">July 18</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-green rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Online Events Deadline</h3>
+                        <p class="text-dark-600">Final submissions for Clip Clash, Game Jam, and DPSI Esports</p>
+                    </div>
+                </div>
+                 <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.1s;">
+                    <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">July 20</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Offline Events Registration</h3>
+                        <p class="text-dark-600">Registration deadline for Code Battle, Techno Bowl, Design Duel, Tech Tune.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.2s;">
+                    <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">July 22</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-pink rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Design Duel Theme Reveal</h3>
+                        <p class="text-dark-600">Theme for Design Duel (UI/UX & Product Design) announced.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.3s;"> <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">Aug 2</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-purple rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Techno Bowl Round 1</h3>
+                        <p class="text-dark-600">Online qualifiers for the tech quiz competition.</p>
+                    </div>
+                </div>
+                 <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.4s;">
+                    <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">Aug 4</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-purple rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Techno Bowl Top 6</h3>
+                        <p class="text-dark-600">Declaration of top 6 teams for Techno Bowl finals.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.5s;"> <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">Aug 5</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-pink rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Design Duel Submissions</h3>
+                        <p class="text-dark-600">Submit your UI/UX or Physical Product designs.</p>
+                    </div>
+                </div>
+                 <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.6s;">
+                    <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">Aug 8</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-pink rounded-full"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Design Duel Top 10</h3>
+                        <p class="text-dark-600">Declaration of top 10 teams for Design Duel final presentations.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-8 animate-slide-in" style="animation-delay: 0.7s;"> <div class="flex-shrink-0 w-24 text-right">
+                        <div class="text-2xl font-light">Aug 13</div>
+                        <div class="text-dark-600 text-sm">2025</div>
+                    </div>
+                    <div class="w-4 h-4 bg-accent-blue rounded-full animate-pulse-glow"></div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Main Event Day</h3>
+                        <p class="text-dark-600">All offline events, final presentations, and awards ceremony. Results for online events announced.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="section-padding">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <h2 class="text-5xl md:text-6xl font-light mb-8">Ready to join?</h2>
+            <p class="text-xl text-dark-600 mb-12 font-light max-w-2xl mx-auto">
+                Step into an imperfect world where your innovations can make all the difference. Registration is now open.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+                <button class="bg-white text-black px-12 py-4 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                    Register Now
+                </button>
+                <button class="border border-dark-300 text-white px-12 py-4 rounded-full font-medium hover:bg-dark-200 transition-all duration-300">
+                    Download Brochure
+                </button>
+            </div>
+            
+            <div class="glass-effect p-8 rounded-3xl">
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <i class="fas fa-calendar text-accent-blue text-2xl mb-4"></i>
+                        <h4 class="font-medium mb-2">Important Dates</h4>
+                        <p class="text-dark-600 text-sm">Online Events Deadline: July 18<br>Offline Reg. Deadline: July 20<br>Main Event: Aug 13</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-users text-accent-green text-2xl mb-4"></i>
+                        <h4 class="font-medium mb-2">Eligibility</h4>
+                        <p class="text-dark-600 text-sm">Students in<br>Grades 9-12</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-envelope text-accent-purple text-2xl mb-4"></i>
+                        <h4 class="font-medium mb-2">Contact</h4>
+                        <p class="text-dark-600 text-sm">techathlon@dpsi.edu<br>+91 98765 43210</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark-100 py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-8 h-8 bg-gradient-to-r from-accent-blue to-accent-purple rounded-lg flex items-center justify-center">
+                            <i class="fas fa-code text-white text-sm"></i>
+                        </div>
+                        <span class="font-semibold text-lg">Techathlon</span>
+                    </div>
+                    <p class="text-dark-600 text-sm mb-6">An Imperfect World<br>August 13, 2025</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-dark-200 rounded-full flex items-center justify-center text-dark-600 hover:text-white hover:bg-accent-blue transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-200 rounded-full flex items-center justify-center text-dark-600 hover:text-white hover:bg-accent-purple transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-200 rounded-full flex items-center justify-center text-dark-600 hover:text-white hover:bg-accent-pink transition-all duration-300">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4">Events</h4>
+                    <ul class="space-y-2 text-sm text-dark-600">
+                        <li><a href="#events" class="hover:text-white transition-colors">Code Battle</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">Techno Bowl</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">Design Duel</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">Tech Tune</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">Clip Clash</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">Game Jam</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">DPSI Esports</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-dark-600">
+                        <li><a href="#register" class="hover:text-white transition-colors">Registration</a></li>
+                        <li><a href="#timeline" class="hover:text-white transition-colors">Timeline</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Brochure</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 class="font-medium mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-sm text-dark-600">
+                        <li><p>Email: techathlon@dpsi.edu</p></li>
+                        <li><p>Phone: +91 98765 43210</p></li>
+                        <li><p>DPS International, Saket</p></li>
+                        <li><p>New Delhi, India</p></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-dark-300 pt-8 text-center text-dark-600 text-sm">
+                &copy; 2025 Techathlon DPSI. All rights reserved. Theme: An Imperfect World.
+            </div>
+        </div>
+    </footer>
+
+     <div id="modal-code-battle" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-code-battle')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-blue rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-code text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">Code Battle</h3>
+                    <p class="text-accent-blue text-sm md:text-md">Hack the Gap</p>
+                </div>
+            </div>
+
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                <p>This event challenges students to identify and fix bugs, navigate algorithms, and demonstrate their expertise in coding. In this imperfect world, every line of code counts.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Key Details:</h4>
+                <ul class="list-none space-y-1 pl-1">
+                    <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-blue"></i><strong>Offline Event Registration Date:</strong> Jul 20, 2025</li>
+                    <li><i class="fas fa-map-marker-alt w-5 mr-2 text-accent-blue"></i><strong>Venue:</strong> Primary ICT Lab (4th floor)</li>
+                    <li><i class="fas fa-user w-5 mr-2 text-accent-blue"></i><strong>Participants:</strong> 1 per entry</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-blue"></i><strong>School Limit:</strong> Max 3 entries per school</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-blue"></i><strong>Eligibility:</strong> Grades 9 to 12</li>
+                    <li><i class="fas fa-clock w-5 mr-2 text-accent-blue"></i><strong>Total Event Time:</strong> 3 hours</li>
+                    <li><i class="fas fa-laptop w-5 mr-2 text-accent-blue"></i><strong>Requirements:</strong> Bring your own laptops. WiFi will be provided.</li>
+                    <li><i class="fab fa-hackerrank w-5 mr-2 text-accent-blue"></i><strong>Platform:</strong> HackerRank (ID required before competition).</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Event Format:</h4>
+                <p>Participants will be assessed on speed and accuracy. Questions will cover various data structures and algorithms (DSA) topics with varying levels of difficulty, including:</p>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Arrays, Stacks, Queues, Searching and Sorting</li>
+                    <li>Loops and Conditional Statements</li>
+                    <li>String manipulation (reversing, finding duplicates, insertion, deletion, searching)</li>
+                    <li>Basic Recursion and logical thinking</li>
+                </ul>
+                <p class="mt-2">Participants will not be permitted to use built-in functions or library functions that directly solve the problem, unless clearly specified in problem statements. Participants can choose from a predefined list of languages (e.g., Python, C++, Java, etc.).</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Rules & Evaluation:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Code Evaluation: Time and correctness are primary assessment factors.</li>
+                    <li>Winners will be ranked on the HackerRank leaderboard.</li>
+                    <li>Participants are strictly prohibited from using any external resources during the competition.</li>
+                    <li>It is recommended that participants have an intermediate understanding of data structures and algorithms (DSA) and be familiar with at least one programming language like Python, JavaScript, or C++.</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-blue hover:bg-blue-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-techno-bowl" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-techno-bowl')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-purple rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-brain text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">Techno Bowl</h3>
+                    <p class="text-accent-purple text-sm md:text-md">From Bugs to Breakthroughs — Test Your Tech IQ</p>
+                </div>
+            </div>
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                <p>This offline quiz event is designed to challenge students' understanding of the ever-expanding tech universe - from artificial intelligence and cybersecurity to gadgets, global tech companies, and cutting-edge innovations.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Key Details:</h4>
+                 <ul class="list-none space-y-1 pl-1">
+                    <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-purple"></i><strong>Offline Event Registration Date:</strong> Jul 20, 2025</li>
+                    <li><i class="fas fa-map-marker-alt w-5 mr-2 text-accent-purple"></i><strong>Finals Venue:</strong> Auditorium</li>
+                    <li><i class="fas fa-users w-5 mr-2 text-accent-purple"></i><strong>Team Size:</strong> 2 participants per team</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-purple"></i><strong>School Limit:</strong> Maximum 2 teams per school</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-purple"></i><strong>Eligibility:</strong> Grades 9 to 12</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Event Format (2 Rounds):</h4>
+                <p>Content Areas: Artificial Intelligence, Cybersecurity, Tech Companies & Gadgets, Computer Fundamentals, Tech in Current Affairs, Ethical Challenges in a Digital Age.</p>
+                
+                <h5 class="text-md font-medium text-white mt-2 mb-1">Round 1: Preliminary Round (Online)</h5>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Date: Wednesday, August 2, 2025</li>
+                    <li>Platform: All teams will join a Microsoft Teams call, and participate in an online quiz hosted on Microsoft Forms.</li>
+                    <li>Format: 30 Questions within 20 minutes.</li>
+                    <li>Qualification: The top 6 teams will qualify for the final round hosted at the DPSI campus. (Results: August 4, 2025)</li>
+                    <li>Meeting details will be shared closer to the date.</li>
+                </ul>
+
+                <h5 class="text-md font-medium text-white mt-2 mb-1">Round 2: Final Round (Offline)</h5>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Date: Day of the event (August 13, 2025)</li>
+                    <li>Venue: Auditorium</li>
+                    <li>Sections: Divided into four sections:
+                        <ul class="list-circle list-inside pl-4">
+                            <li>Guess Who Round: Teams test their knowledge of famous personalities.</li>
+                            <li>MCQ Round: Teams answer multiple-choice questions based on core technology concepts.</li>
+                            <li>Buzzer Round: A fast-paced round where teams must buzz in to answer first.</li>
+                            <li>Rapid Fire Round: Quick-response multiple choice questions to test reflexes and knowledge under pressure.</li>
+                            <li>Bonus Round: Wager Round</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-purple hover:bg-purple-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="modal-design-duel" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-design-duel')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-pink rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-palette text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">Design Duel</h3>
+                    <p class="text-accent-pink text-sm md:text-md">Crafting Solutions for an Imperfect World</p>
+                </div>
+            </div>
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                <p>This offline design competition invites students to rethink everyday experiences and offer bold design interventions. Participants will compete in teams to design innovative user interfaces (UI/UX) or physical product concepts, focusing on real-world usability, aesthetics, and smart features.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Key Details:</h4>
+                <ul class="list-none space-y-1 pl-1">
+                    <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-pink"></i><strong>Offline Event Registration Date:</strong> Jul 20, 2025</li>
+                    <li><i class="fas fa-calendar w-5 mr-2 text-accent-pink"></i><strong>Theme Reveal:</strong> Wednesday, July 22, 2025</li>
+                    <li><i class="fas fa-upload w-5 mr-2 text-accent-pink"></i><strong>Online Submission Deadline:</strong> August 5, 2025</li>
+                    <li><i class="fas fa-award w-5 mr-2 text-accent-pink"></i><strong>Top 10 Teams Declaration:</strong> August 8, 2025</li>
+                    <li><i class="fas fa-bullhorn w-5 mr-2 text-accent-pink"></i><strong>Final Presentation (Top 10 Teams):</strong> Day of the event (August 13, 2025)</li>
+                    <li><i class="fas fa-map-marker-alt w-5 mr-2 text-accent-pink"></i><strong>Venue:</strong> ICT Lab (3rd Floor)</li>
+                    <li><i class="fas fa-users w-5 mr-2 text-accent-pink"></i><strong>Team Size:</strong> 2 participants per team</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-pink"></i><strong>School Limit:</strong> Max 2 teams per school (one team per track).</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-pink"></i><strong>Eligibility:</strong> Grades 9 to 12</li>
+                    <li><i class="fas fa-laptop w-5 mr-2 text-accent-pink"></i><strong>Requirements:</strong> Bring your own laptops. WiFi access will be provided.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Tracks:</h4>
+                 <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li><strong>Track A: UI/UX Design</strong> – Create a user interface for a digital platform or application.</li>
+                    <li><strong>Track B: Product Design</strong> – Conceptualize a physical product, illustrated through sketches, CAD models, or basic prototypes.</li>
+                </ul>
+                <p class="mt-1">The theme and detailed brief will be revealed in advance to allow time for research, ideation, and refinement. Submissions should reflect real-world usability, attention to detail, and integration of smart features that tackle imperfections in current systems. Top 10 teams (5 from each track) will be shortlisted for live presentations during the event. One winning team will be selected from each track.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Final Presentation Format (Top 10 Teams):</h4>
+                <p>Duration: 5 minutes presentation + 3 minutes Q&A.</p>
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Design Considerations:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Relevance to the theme</li>
+                    <li>Personalization: Tailoring the user experience based on individual preferences.</li>
+                    <li>Collaboration: Enabling multi-user interaction or teamwork functionalities.</li>
+                    <li>Gamification: Introducing elements of gaming to enhance user engagement (point scoring, competition with others, rules of play).</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Software & Tools:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>UI/UX: Participants can use any graphic design software of their choice, such as Adobe Photoshop, Illustrator, SketchUp, Figma, Other UI design tools.</li>
+                    <li>Product Design: Physical Product Designers May Use Sketches (hand-drawn or digital), CAD models (TinkerCAD, Fusion 360, SolidWorks, etc.), Prototypes (paper models, cardboards, or basic 3D prints allowed if pre-prepared).</li>
+                    <li>Design Elements (UI/UX): Vector graphics, typography, digital illustrations, and multimedia elements are allowed and encouraged.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Submission Requirements:</h4>
+                 <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Teams must submit a presentation file (PDF or PPT) that explains the project's objectives, key features, design process and the designs created.</li>
+                    <li>All designs must be submitted as JPEG, PNG, or PDF files.</li>
+                    <li>For Physical product designs (Track B), design images with all the perspectives or views should be included in the presentation.</li>
+                    <li>Naming Convention: Files should be named as SchoolName_TeamName.pptx / .pdf</li>
+                    <li>Submission: Participants must upload their files to a provided Google Drive link before the submission deadline. URLs: Submitting URLs or online links is not allowed.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Judging Criteria:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Creativity and Originality: The uniqueness and innovative approach of the design.</li>
+                    <li>Visual Impact: The overall aesthetic and appeal of the design.</li>
+                    <li>Functionality: How effectively the design solves the problem and addresses the theme.</li>
+                    <li>Technical Skill: The quality of execution and proficiency in using design tools.</li>
+                    <li>Relevance to the Prompt and Theme: Alignment with the given theme and objectives.</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-pink hover:bg-pink-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-tech-tune" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-tech-tune')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-orange rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-music text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">Tech Tune</h3>
+                    <p class="text-accent-orange text-sm md:text-md">Remixing the Sounds of an Imperfect World</p>
+                </div>
+            </div>
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                <p>This offline music-tech event challenges students to remix a track from a movie, TV show, or sitcom. On the day of the event, a genre will be revealed. Explore how technology can reshape the emotional tone of sound.</p>
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Key Details:</h4>
+                <ul class="list-none space-y-1 pl-1">
+                     <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-orange"></i><strong>Offline Event Registration Date:</strong> Jul 20, 2025</li>
+                    <li><i class="fas fa-map-marker-alt w-5 mr-2 text-accent-orange"></i><strong>Venue:</strong> Physics Lab</li>
+                    <li><i class="fas fa-users w-5 mr-2 text-accent-orange"></i><strong>Team Size:</strong> 2 participants per team</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-orange"></i><strong>School Limit:</strong> One team per school</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-orange"></i><strong>Eligibility:</strong> Grades 9 to 12</li>
+                    <li><i class="fas fa-clock w-5 mr-2 text-accent-orange"></i><strong>Time Limit:</strong> 3 hours on event day</li>
+                    <li><i class="fas fa-headphones w-5 mr-2 text-accent-orange"></i><strong>Requirements:</strong> Participants must bring their headphones/earphones and laptops. An internet connection will be provided. Note: A midi-keyboard and a sound card are also allowed.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Event Format:</h4>
+                <p>Task: Remix a chosen beat from a film, show, or sitcom into a different genre based on the event's theme, provided on the day of the event. Participants will showcase their ability to: Mix and layer audio tracks, Apply effects and transitions, Create rhythm, mood, and originality within a limited time.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Software & Tools:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Required: Participants are required to use any Digital Audio Workstation (DAW).</li>
+                    <li>Additionally, they may use the following plugins, samples, or VSTs: Spitfire Audio - LABS, and others from provided links.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Submission Requirements:</h4>
+                 <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>The remixed track must be 45-70 seconds long.</li>
+                    <li>File Format: MP3 or other compatible formats.</li>
+                    <li>Submission Method: Files should be uploaded to a Google Drive link provided by the organizers.</li>
+                    <li>Title and Description: Participants should provide a simple title for their track and a brief description (25-50 words) explaining their concept.</li>
+                    <li>File Naming Format: SchoolName_TeamName.mp3</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Judging Criteria:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Creativity and Originality: How inventive and unique the remix is.</li>
+                    <li>Technical Skill and Use of Technology: Proficiency in using software and tools to create the remix.</li>
+                    <li>Connection and Justification: The explanation of the remix's connection to the theme and genre.</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-orange hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-clip-clash" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-clip-clash')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-cyan rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-video text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">Clip Clash</h3>
+                    <p class="text-accent-cyan text-sm md:text-md">Online Video Editing Challenge</p>
+                </div>
+            </div>
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Theme & Prompt:</h4>
+                <p><strong>Theme:</strong> "What If…"</p>
+                <p><strong>Prompt:</strong> The goal is to create an engaging video that creatively highlights a "what if" scenario — an alternate reality, choice, or unexpected outcome, using effective transitions, camera work, and effects. The final video should loop seamlessly.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Competition Details:</h4>
+                <ul class="list-none space-y-1 pl-1">
+                    <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-cyan"></i><strong>Submission Deadline:</strong> Friday, July 18, 2025, 6 pm IST</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-cyan"></i><strong>Eligibility:</strong> Grades 9-12</li>
+                    <li><i class="fas fa-users w-5 mr-2 text-accent-cyan"></i><strong>Team Size:</strong> 1-2 participants per team</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-cyan"></i><strong>Entry Limit:</strong> One team per school</li>
+                    <li><i class="fas fa-trophy w-5 mr-2 text-accent-cyan"></i><strong>Results Announced:</strong> August 13, 2025</li>
+                </ul>
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Submission Method:</h4>
+                 <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>All submissions for the online category must be submitted by Friday, July 18, 2025, 6 pm IST through Google Forms for the respective event.</li>
+                    <li>Final Video: The edited video file must be in a widely accepted format (e.g., MP4, MOV), between 30-90 seconds long.</li>
+                    <li>Compiled Bundle: A folder containing all raw footage, images, and project files used in the creation of the video must be submitted alongside the final video.</li>
+                    <li>Video submission, if submitted as a Google Drive link, access should be provided. Video submission must be in MP4 format.</li>
+                    <li>No personal information about the students, school, etc should be there in the video submissions.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Rules:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Original Footage: All video clips must be filmed by the students. Pre-existing or stock footage is not allowed.</li>
+                    <li>Video Editing Software: Participants may use any video editing software of their choice.</li>
+                    <li>AI Usage: Minimal AI use is permitted. The focus should be on the participant’s own editing skills.</li>
+                    <li>Music: The music used must be appropriate, with no vulgar or inappropriate content.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Judgment Criteria (Total 50 points):</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Seamlessness of Transitions: How fluid and smooth the transitions between shots and scenes are (10 points).</li>
+                    <li>Use of Camera Angles and Framing: Creativity and variety in camera angles and the framing of each shot (10 points).</li>
+                    <li>Use of Sound and Visual Effects: The effective use of sound and visual effects to enhance the overall quality of the video (10 points).</li>
+                    <li>Color Grading: The use of color to set the mood, ensure consistency, and enhance visual appeal (10 points).</li>
+                    <li>Overall Creativity and Presentation: The originality and impact of the video as a whole (10 points).</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-cyan hover:bg-cyan-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Submit Here / Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-game-jam" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-game-jam')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-green rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-gamepad text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">Game Jam</h3>
+                    <p class="text-accent-green text-sm md:text-md">Online Game Development Challenge</p>
+                </div>
+            </div>
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Theme: "Glitch in Time"</h4>
+                <p>Participants must create an original game that explores the thrilling concept of time travel — where every choice in the past echoes into the future. Your game should immerse players in a story or world where altering even the smallest event can change everything. Your mission is to let players feel the power (and consequence) of time.</p>
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">What Participants Can Create:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>A playable game or interactive prototype based on the time-travel theme.</li>
+                    <li>A narrative-driven or choice-based game involving time glitches, alternate realities, or time-travel puzzles.</li>
+                    <li>A game prototype that includes levels or mechanics that shift based on time distortions (e.g., rewinding, pausing, fast-forwarding).</li>
+                    <li>An interactive animation or simulation that tells a compelling, glitch-themed story — ideal for beginners or those interested in animation/storytelling, design, or visual effects without coding a full game.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Competition Details:</h4>
+                 <ul class="list-none space-y-1 pl-1">
+                    <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-green"></i><strong>Submission Deadline:</strong> Friday, July 18, 2025, 6 pm IST (General online event deadline)</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-green"></i><strong>Eligibility:</strong> Grades 9-12</li>
+                    <li><i class="fas fa-users w-5 mr-2 text-accent-green"></i><strong>Team Size:</strong> 1-2 participants per entry</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-green"></i><strong>Entry Limit:</strong> One team per school</li>
+                     <li><i class="fas fa-tools w-5 mr-2 text-accent-green"></i><strong>Tools:</strong> You can use any tools (no code or code), such as Unity, Unreal Engine, Godot, Sandbox, etc.</li>
+                    <li><i class="fas fa-trophy w-5 mr-2 text-accent-green"></i><strong>Results Announced:</strong> August 13, 2025</li>
+                </ul>
+                 <p class="mt-1">Submissions via Google Forms for the event.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Rules:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Free assets from websites such as mixamo.com, itch.io, sketchfab.com, etc., may be used.</li>
+                    <li>Help forums with discussion threads may be used.</li>
+                    <li>3D modeling software may be used.</li>
+                    <li>Any game engine of choice may be used but is not necessary.</li>
+                    <li>Ensure that your work is authentic.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Judgment Criteria:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Fun Factor: The game must be intriguing and fun to play.</li>
+                    <li>User Interface: The user interface must be clean and easy for judges to comprehend.</li>
+                    <li>Relation to the Theme: The game must have a strong relation with the theme. Even if the participant makes a brilliant game, it will be judged poorly if it doesn’t relate to the theme.</li>
+                    <li>Sound Design: The developers will be judged on how well they incorporate music and sound effects to enhance the player experience.</li>
+                    <li>Creativity: The game must be unique. It is recommended to think outside the box.</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-green hover:bg-green-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Submit Here / Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-dpsi-esports" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[100] hidden animate-modal-fade-in">
+        <div class="glass-effect p-6 md:p-8 rounded-3xl max-w-3xl w-full relative">
+            <button onclick="closeModal('modal-dpsi-esports')" class="absolute top-4 right-4 md:top-6 md:right-6 text-dark-600 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-accent-mint rounded-2xl flex items-center justify-center mr-4 shrink-0">
+                    <i class="fas fa-trophy text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-medium text-white">DPSI Esports</h3>
+                    <p class="text-accent-mint text-sm md:text-md">Valorant & Rocket League Tournament</p>
+                </div>
+            </div>
+            <div class="modal-content-area space-y-4 text-white text-sm md:text-base leading-relaxed pr-2">
+                <p>This online event unites young gamers to compete in Valorant and Rocket League, fostering fair play, sportsmanship, and a competitive spirit.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Games:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Valorant</li>
+                    <li>Rocket League</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Participation Details:</h4>
+                 <ul class="list-none space-y-1 pl-1">
+                    <li><i class="fas fa-calendar-alt w-5 mr-2 text-accent-mint"></i><strong>Registration/Entry Deadline:</strong> Friday, July 18, 2025, 6 pm IST (General online event deadline)</li>
+                     <li><i class="fas fa-clock w-5 mr-2 text-accent-mint"></i><strong>Tentative Dates & Timings:</strong> After school hours and weekend matches (as scheduled by players and admins).</li>
+                    <li><i class="fas fa-graduation-cap w-5 mr-2 text-accent-mint"></i><strong>Eligibility:</strong> Valorant & Rocket League: Open to students from Grades 9 to 12.</li>
+                    <li><i class="fas fa-school w-5 mr-2 text-accent-mint"></i><strong>Entry Limit:</strong> 1 team per school per game (Rocket League/ Valorant).</li>
+                    <li><i class="fas fa-globe-asia w-5 mr-2 text-accent-mint"></i><strong>Regional Note:</strong> Schools outside of Asia can only participate in Rocket League, not Valorant, due to server compatibility and latency issues with Valorant.</li>
+                     <li><i class="fas fa-trophy w-5 mr-2 text-accent-mint"></i><strong>Results Announced:</strong> August 13, 2025</li>
+                </ul>
+                 <p class="mt-1">Submissions/Registrations via Google Forms for the event.</p>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Team Composition:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li><strong>Valorant:</strong> A complete team of 5 players with 1 substitute (Additional substitutions will be considered on a case-by-case basis, provided that players verify their identity and sufficient notice is given).</li>
+                    <li><strong>Rocket League:</strong> 2 players per team (no substitutes unless necessary).</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Tournament Format:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Valorant: Double Elimination Bracket</li>
+                    <li>Rocket League: Single Elimination Bracket</li>
+                    <li>Note: Fixtures will be drawn live to ensure fairness.</li>
+                    <li>Valorant Semi-Finals and Finals: Best of 3 (BO3) format, with map vetoes conducted by team leaders before each match.</li>
+                </ul>
+
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Cheating Prevention & Streaming:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Camera Requirements: Participants must have two devices on Discord: one for face view and another for setup view (including face/body).</li>
+                    <li>Streaming: Matches will be streamed with a delay on a private voice channel to prevent stream sniping.</li>
+                </ul>
+                
+                <h4 class="text-lg font-medium text-white mt-3 mb-1">Event Awards:</h4>
+                <ul class="list-disc list-inside space-y-1 pl-4">
+                    <li>Champion Award (All Games)</li>
+                    <li>Most Valuable Player (MVP) Award (Valorant, Rocket League)</li>
+                    <li>Grand Finals MVP Award (Valorant, Rocket League)</li>
+                    <li>Best Individual Play Award (Valorant, Rocket League)</li>
+                    <li>Community Choice Award (All Games)</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <button class="bg-accent-mint hover:bg-mint-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105">
+                        Register Here
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore background scrolling
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventCards = document.querySelectorAll('[data-modal-target]');
+            eventCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const modalId = card.getAttribute('data-modal-target');
+                    openModal(modalId);
+                });
+            });
+
+            // Add event listener for closing modals when clicking on the backdrop
+            const modals = document.querySelectorAll('.fixed.inset-0.bg-black.bg-opacity-75');
+            modals.forEach(modal => {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) { // If the click is on the backdrop itself
+                        closeModal(modal.id);
+                    }
+                });
+                // Also close on Escape key
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === "Escape" && !modal.classList.contains('hidden')) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
